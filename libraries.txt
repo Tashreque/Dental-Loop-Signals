@@ -1,0 +1,14 @@
+tkinter (built in python GUI tool)
+PIL (pip install)
+
+pip install customtkinter (a wrapper over tkinter)
+tsfel
+neurokit2
+sdv python
+openCV python
+
+Target:
+- generate cluster centric signal for individual (show individually, no overlap)
+- generate overlapped signals of individuals (original signals)
+- generate duration, intensity on normalized as well as original
+- Get difference (absolute value), normalize the value
