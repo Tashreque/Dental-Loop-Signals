@@ -19,6 +19,7 @@ class App(tk.Tk):
         # All text boxes used
         self.num_muscles_text_box = None
         self.mag_text_box = None
+        self.option_menu_option = None
 
         # Control variables
         self.is_new_window_active = False
@@ -27,12 +28,16 @@ class App(tk.Tk):
         self.images = []
         self.muscle_name_text_boxes = []
 
+        # Current muscle activity
+        self.activity = "chewing"
+
         # Member widgets
         self.image_viewer = None
 
         self.__add_labels()
         self.__add_text_boxes()
         self.__add_buttons()
+        self.__add_option_menus()
 
     def __add_labels(self):
         # Add magnification label
@@ -46,6 +51,22 @@ class App(tk.Tk):
         # Add label for number of muscles
         label_num_muscles = Label(self, text="Number of muscles")
         label_num_muscles.grid(row=2, column=0)
+
+        # Add label for activity type
+        label_activity = Label(self, text="Closest matching activity")
+        label_activity.grid(row=3, column=0)
+
+    def __add_option_menus(self):
+        # Create the list of options 
+        options_list = ["Chewing", "Maximum Lateral Excursion (MLE)", 
+                        "Maximum Mouth Opening (MMO)",
+                        "Maximum Anterior Protrusion (MAP)"]
+        self.option_menu_option = tk.StringVar(self)
+        self.option_menu_option.set(options_list[0])
+        self.option_menu_option.trace("w", self.__select_from_menu)
+        menu = tk.OptionMenu(self, self.option_menu_option,
+                             *options_list)
+        menu.grid(row=3, column=1)
 
     def __add_text_boxes(self):
         # Add magnification text box
@@ -74,7 +95,7 @@ class App(tk.Tk):
         # Add an exit button to close the application
         exit_button = Button(self, text="Exit",
                              command=self.quit)
-        exit_button.grid(row=3, column=1)
+        exit_button.grid(row=4, column=1)
 
     def __display_images(self):
         self.muscle_name_text_boxes = []
@@ -148,6 +169,18 @@ class App(tk.Tk):
         self.image_viewer.destroy()
         self.image_viewer = None
 
+    def __select_from_menu(self, *args):
+        # Handle option menu selection
+        option = self.option_menu_option.get()
+        if option == "Maximum Lateral Excursion (MLE)":
+            self.activity = "mle"
+        elif option == "Chewing":
+            self.activity = "chewing"
+        elif option == "Maximum Mouth Opening (MMO)":
+            self.activity = "mmo"
+        else:
+            self.activity = "map"
+
     def __validate_input(self, new_value):
         # Check if the new value is a valid integer
         if new_value == "":
@@ -161,7 +194,7 @@ class App(tk.Tk):
 
     def __process_signals(self):
         print(f"There are {len(self.images)} images")
-        muscle_names = [each.get() for each in self.muscle_name_text_boxes]
+        muscle_labels = [each.get() for each in self.muscle_name_text_boxes]
         muscle_names = ["ta_r", "ta_l", "mm_r",
                         "mm_l", "da_r", "da_l"]
         print("Current muscle activity:", "chewing")
@@ -170,7 +203,7 @@ class App(tk.Tk):
         print("Curr num of muscles:", self.num_muscles_text_box.get())
         images = [ImageTk.getimage(each) for each in self.images]
         process = Process(images, muscle_names,
-                          "chewing")
+                          self.activity)
 
 # The main UI loop
 app = App()
