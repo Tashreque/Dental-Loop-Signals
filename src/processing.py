@@ -12,11 +12,13 @@ from clustering import Cluster
 import matplotlib.pyplot as plt
 
 class Process:
-    def __init__(self, images, muscles, muscle_activity="mle"):
+    def __init__(self, images, muscles, muscle_labels,
+                 muscle_activity="mle"):
         # Member variables to store images, muscles and activity
         self.images = images
         self.muscles = muscles
         self.muscle_activity = muscle_activity
+        self.muscle_labels = muscle_labels
 
         # Resize all images to a common size
         self.__resize_images(1617, 590)
@@ -235,6 +237,7 @@ class Process:
             for signals, features in zip(signals_list, features_list):
                 clustering = Cluster(features, signals,
                                      self.muscles[muscle_index],
+                                     self.muscle_labels[muscle_index],
                                      self.muscle_activity,
                                      subject_index + 1)
                 generated_signals = clustering.get_cluster_signals()
@@ -324,21 +327,6 @@ class Process:
             muscle_index += 1
         print("Obtained muscle wise signals")
 
-        print(len(muscle_wise_signals))
-        print("----")
-        # for i, muscle_signals in enumerate(muscle_wise_signals):
-        #     legends = []
-        #     for j, sig in enumerate(muscle_signals):
-        #         # Perform plotting
-        #         fig = plt.figure()
-        #         plt.plot(range(len(sig)),
-        #                  sig)
-        #         plt.xlabel("Samples")
-        #         plt.ylabel("Magnitude")
-        #         plt.title(self.muscles[i])
-        #         legends.append(f"Subject {j+1}")
-        #     plt.legend(legends)
-
         # Plot all subjects for each element
         for i, signals_list in enumerate(muscle_wise_signals):
             plt.figure()
@@ -357,6 +345,7 @@ class Process:
                 # if the demo_folder directory is not present
                 # then create it.
                 os.makedirs(file_path)
-            plt.savefig(file_path + f"{self.muscles[i]}.jpg",
+
+            plt.savefig(file_path + f"{self.muscle_labels[i]}.jpg",
                         dpi=300)
             plt.close()

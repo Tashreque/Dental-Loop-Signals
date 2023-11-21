@@ -20,6 +20,7 @@ class App(tk.Tk):
         self.num_muscles_text_box = None
         self.mag_text_box = None
         self.option_menu_option = None
+        self.muscle_option_lists = []
 
         # Control variables
         self.is_new_window_active = False
@@ -99,6 +100,7 @@ class App(tk.Tk):
 
     def __display_images(self):
         self.muscle_name_text_boxes = []
+        self.muscle_option_lists = []
         if not self.is_new_window_active:
             # Create a new window
             new_window = ctk.CTkToplevel()
@@ -113,12 +115,24 @@ class App(tk.Tk):
             left_frame = Frame(frame)
             left_frame.grid(row=0, column=0)
             num_of_muscles = int(self.num_muscles_text_box.get())
+
+            # Create the list of options
+            options_list = ["ta_r", "ta_l", "mm_r",
+                            "mm_l", "da_r", "da_l"]
             for i in range(num_of_muscles):
                 tmp_lbl = Label(left_frame, text=f"Muscle {i+1} name:")
                 tmp_lbl.pack(pady=10)
                 tmp_text_box = Entry(left_frame)
                 tmp_text_box.pack()
                 self.muscle_name_text_boxes.append(tmp_text_box)
+
+                option = tk.StringVar(self)
+                option.set(options_list[i])
+                option.trace("w", self.__select_from_menu_for_muscle)
+                self.muscle_option_lists.append(option)
+                menu = tk.OptionMenu(left_frame, option,
+                                     *options_list)
+                menu.pack()
 
             # Add button to process
             # process_button = Button(left_frame, text="PROCESS",
@@ -166,10 +180,12 @@ class App(tk.Tk):
     def __on_closing(self):
         self.muscle_name_text_boxes = []
         self.images = []
+        self.muscle_option_lists = []
         self.image_viewer.destroy()
         self.image_viewer = None
 
     def __select_from_menu(self, *args):
+        print(args)
         # Handle option menu selection
         option = self.option_menu_option.get()
         if option == "Maximum Lateral Excursion (MLE)":
@@ -180,6 +196,10 @@ class App(tk.Tk):
             self.activity = "mmo"
         else:
             self.activity = "map"
+
+    def __select_from_menu_for_muscle(self, *args):
+        # Handle option menu selection
+        print(args)
 
     def __validate_input(self, new_value):
         # Check if the new value is a valid integer
@@ -195,15 +215,28 @@ class App(tk.Tk):
     def __process_signals(self):
         print(f"There are {len(self.images)} images")
         muscle_labels = [each.get() for each in self.muscle_name_text_boxes]
-        muscle_names = ["ta_r", "ta_l", "mm_r",
-                        "mm_l", "da_r", "da_l"]
+        muscle_names = [each.get() for each in self.muscle_option_lists]
+        new_muscle_labels = []
+        for i, label in enumerate(muscle_labels):
+            if len(label.strip()) > 0:
+                temp_label = label.replace(' ', '_')
+                temp_label = temp_label.replace('-', '_')
+                new_muscle_labels.append(temp_label)
+            else:
+                new_muscle_labels.append(muscle_names[i])
+
+        if not len(set(new_muscle_labels)) == len(muscle_names):
+            new_muscle_labels = muscle_names.copy()
+
         print("Current muscle activity:", "chewing")
         print("Muscle names:", muscle_names)
+        print("Muscle labels:", new_muscle_labels)
         print("Curr magnification:", self.mag_text_box.get())
         print("Curr num of muscles:", self.num_muscles_text_box.get())
         images = [ImageTk.getimage(each) for each in self.images]
-        process = Process(images, muscle_names,
-                          self.activity)
+        # process = Process(images, muscle_names,
+        #                   new_muscle_labels, self.activity)
+
 
 # The main UI loop
 app = App()

@@ -13,11 +13,13 @@ import neurokit2 as nk
 
 class Cluster:
     def __init__(self, df, signals,
-                 muscle, muscle_activity, subject_number):
+                 muscle, muscle_label,
+                 muscle_activity, subject_number):
         # Initialize member attributes
         self.df = df
         self.signals = signals
         self.muscle = muscle
+        self.muscle_label = muscle_label
         self.muscle_activity = muscle_activity
         self.subject_number = subject_number
         self.cluster_signals = None
@@ -269,7 +271,8 @@ class Cluster:
             # if the demo_folder directory is not present
             # then create it.
             os.makedirs(file_path)
-        plt.savefig(file_path + f"{self.muscle}.jpg", dpi=300)
+
+        plt.savefig(file_path + f"{self.muscle_label}.jpg", dpi=300)
         plt.close(fig)
 
     def get_cluster_signals(self):
