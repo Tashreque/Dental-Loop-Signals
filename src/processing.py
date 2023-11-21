@@ -82,6 +82,7 @@ class Process:
         return subject_images
 
     def __extract_signal_points(self, test_image):
+        # This function extracts signal points from an image
         cols = test_image.shape[1]
         rows = test_image.shape[0]
 
@@ -90,17 +91,22 @@ class Process:
             row_values = []
             for row in range(rows-1, -1, -1):
                 pixel_value = test_image[row][col]
+                # Check if pixel is white
                 if pixel_value == 255:
                     row_values.append(row)
 
+            # If no values present in a column, consider value as 0
             if len(row_values) > 0:
                 signal_points.append((rows - row_values[-1]))
             else:
                 signal_points.append(0)
 
+        # Perform signal baseline correction
         signal_points = np.array(signal_points)
         baseline_correction_value = np.bincount(signal_points).argmax()
         signal_points = signal_points - baseline_correction_value
+
+        # Replace negative values with 0
         signal_points[signal_points < 0] = 0
 
         return signal_points

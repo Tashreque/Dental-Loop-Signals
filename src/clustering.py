@@ -168,21 +168,25 @@ class Cluster:
         return reduced_x
 
     def __do_kmeans(self, reduced_x, k):
+        # This function is called to cluster using the K-Means algorithm
         final_kmeans = KMeans(n_clusters=k, init="k-means++", max_iter=1000)
         labels_kmeans = final_kmeans.fit_predict(reduced_x)
         return labels_kmeans
 
     def __do_gmm(self, reduced_x, k):
+        # This function is called to cluster using the GMM algorithm
         final_gmm = GaussianMixture(n_components=k)
         labels_gmm = final_gmm.fit_predict(reduced_x)
         return labels_gmm
 
     def __do_dbscan(self, reduced_x, epsilon, min_pts):
+        # This function is called to cluster using the DBSCAN algorithm
         dbscan_model = DBSCAN(eps=epsilon, min_samples=min_pts)
         labels_dbscan = dbscan_model.fit_predict(reduced_x)
         return labels_dbscan
 
     def __perform_clustering(self, reduced_x):
+        # Called to choose the clustering algorithm accordingly
         activity = self.parameter_dict[self.muscle_activity]
         model = activity[self.muscle]["model"]
         parameters = activity[self.muscle]["parameters"]
@@ -201,7 +205,8 @@ class Cluster:
             reference_signal = signals[0].copy()
             for sig in signals[1:]:
                 # Calculate the cross-correlation between the two signals
-                cross_corr = signal.correlate(reference_signal, sig, mode='full')
+                cross_corr = signal.correlate(reference_signal,
+                                              sig, mode='full')
 
                 # Find the time lag that maximizes the cross-correlation
                 time_lag = np.argmax(cross_corr) - len(reference_signal) + 1
@@ -209,7 +214,8 @@ class Cluster:
                 # Align the second signal to match the first signal
                 if time_lag > 0:
                     aligned_signal2 = np.pad(sig, (time_lag, 0),
-                                             'constant')[:len(reference_signal)].copy()
+                                             'constant')[:len(
+                                                 reference_signal)].copy()
                     aligned_signal1 = reference_signal.copy()
                 else:
                     aligned_signal1 = np.pad(reference_signal, (-time_lag, 0),

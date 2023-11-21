@@ -60,8 +60,8 @@ class App(tk.Tk):
         label_activity.grid(row=3, column=0)
 
     def __add_option_menus(self):
-        # Create the list of options 
-        options_list = ["Chewing", "Maximum Lateral Excursion (MLE)", 
+        # Create the list of options
+        options_list = ["Chewing", "Maximum Lateral Excursion (MLE)",
                         "Maximum Mouth Opening (MMO)",
                         "Maximum Anterior Protrusion (MAP)"]
         self.option_menu_option = tk.StringVar(self)
@@ -181,12 +181,13 @@ class App(tk.Tk):
 
     def __show_processed_files(self):
         # Open window to show processed files
-        path = "./generated_files/"
-        os.chdir(path)
+        path = r'generated_files'
         try:
-            with subprocess.Popen(['explorer', '.'], shell=True) as _:
-                print("Opened explorer!")
-        except subprocess.CalledProcessError as e:
+            os.startfile(path)
+            # with subprocess.Popen(['start', 
+            #                        'explorer', path], shell=True) as _:
+            #     print("Opened explorer!")
+        except OSError as e:
             print(f"Error opening File Explorer: {e}")
 
     def __on_closing(self):
