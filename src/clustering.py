@@ -9,6 +9,7 @@ from scipy import signal
 import matplotlib.pyplot as plt
 import os
 import neurokit2 as nk
+import pandas as pd
 
 
 class Cluster:
