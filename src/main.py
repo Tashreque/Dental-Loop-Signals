@@ -9,6 +9,8 @@ from PIL import Image
 from PIL import ImageTk
 from processing import Process
 import threading
+import subprocess
+import os
 
 
 class App(tk.Tk):
@@ -177,6 +179,16 @@ class App(tk.Tk):
                 self.image_viewer.destroy()
                 self.__display_images()
 
+    def __show_processed_files(self):
+        # Open window to show processed files
+        path = "./generated_files/"
+        os.chdir(path)
+        try:
+            with subprocess.Popen(['explorer', '.'], shell=True) as _:
+                print("Opened explorer!")
+        except subprocess.CalledProcessError as e:
+            print(f"Error opening File Explorer: {e}")
+
     def __on_closing(self):
         self.muscle_name_text_boxes = []
         self.images = []
@@ -236,6 +248,9 @@ class App(tk.Tk):
         images = [ImageTk.getimage(each) for each in self.images]
         process = Process(images, muscle_names,
                           new_muscle_labels, self.activity)
+
+        # Show file explorer
+        self.__show_processed_files()
 
 
 # The main UI loop

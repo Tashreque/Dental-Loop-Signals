@@ -10,6 +10,7 @@ import os
 from os import listdir
 from clustering import Cluster
 import matplotlib.pyplot as plt
+import glob
 
 class Process:
     def __init__(self, images, muscles, muscle_labels,
