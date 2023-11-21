@@ -234,8 +234,8 @@ class App(tk.Tk):
         print("Curr magnification:", self.mag_text_box.get())
         print("Curr num of muscles:", self.num_muscles_text_box.get())
         images = [ImageTk.getimage(each) for each in self.images]
-        # process = Process(images, muscle_names,
-        #                   new_muscle_labels, self.activity)
+        process = Process(images, muscle_names,
+                          new_muscle_labels, self.activity)
 
 
 # The main UI loop
