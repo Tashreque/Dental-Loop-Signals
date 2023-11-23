@@ -200,7 +200,7 @@ class App(tk.Tk):
         path = r'generated_files'
         try:
             os.startfile(path)
-            # with subprocess.Popen(['start', 
+            # with subprocess.Popen(['start',
             #                        'explorer', path], shell=True) as _:
             #     print("Opened explorer!")
         except OSError as e:
