@@ -23,6 +23,9 @@ class App(tk.Tk):
         self.mag_text_box = None
         self.option_menu_option = None
         self.muscle_option_lists = []
+        self.process_button = None
+        self.background_thread = None
+        self.processing_label = None
 
         # Control variables
         self.is_new_window_active = False
@@ -137,12 +140,27 @@ class App(tk.Tk):
                 menu.pack()
 
             # Add button to process
-            # process_button = Button(left_frame, text="PROCESS",
-            #                         command=threading.Thread(
-            #                             target=self.__process_signals).start)
+            self.background_thread = threading.Thread(
+                target=self.__process_signals)
             process_button = Button(left_frame, text="PROCESS",
-                                    command=self.__process_signals)
+                                    command=self.background_thread.start)
             process_button.pack(pady=20)
+            self.process_button = process_button
+
+            # Add muscle information panel
+            info = ["INFORMATION:\n", "ta_r: Temporalis Right",
+                    "ta_l: Temporalis Left",
+                    "mm_r: Masseter Right",
+                    "mm_l: Masseter Left",
+                    "da_r: Digastric Right",
+                    "da_l: Digastric Left"]
+            info_text = "\n".join(info)
+            info_label = Label(left_frame, text=info_text)
+            info_label.pack(pady=20)
+
+            # Add loading label
+            self.processing_label = Label(left_frame, text="")
+            self.processing_label.pack(pady=10)
 
             # Add images
             for i, image in enumerate(self.images):
@@ -156,8 +174,6 @@ class App(tk.Tk):
             # Bind the closing event to the on_closing function
             new_window.protocol("WM_DELETE_WINDOW", self.__on_closing)
             self.image_viewer = new_window
-
-            # self.is_new_window_active = True
 
     def __browse_images(self):
         # Open a file dialog to select image files
@@ -197,6 +213,19 @@ class App(tk.Tk):
         self.image_viewer.destroy()
         self.image_viewer = None
 
+    def __on_background_task_complete(self):
+        '''
+        This function is called as callback for background
+        processing completion
+        '''
+        print("Background processing done!")
+        self.process_button.configure(state="active")
+        self.processing_label.config(text="")
+        self.__show_processed_files()
+        self.background_thread = None
+        self.image_viewer.destroy()
+        self.__on_closing()
+
     def __select_from_menu(self, *args):
         print(args)
         # Handle option menu selection
@@ -226,6 +255,12 @@ class App(tk.Tk):
             return False
 
     def __process_signals(self):
+        # Disable process button to restrict user interaction
+        self.process_button.configure(state="disabled")
+
+        # Set waiting text
+        self.processing_label.config(text="Processing...")
+
         print(f"There are {len(self.images)} images")
         muscle_labels = [each.get() for each in self.muscle_name_text_boxes]
         muscle_names = [each.get() for each in self.muscle_option_lists]
@@ -247,11 +282,12 @@ class App(tk.Tk):
         print("Curr magnification:", self.mag_text_box.get())
         print("Curr num of muscles:", self.num_muscles_text_box.get())
         images = [ImageTk.getimage(each) for each in self.images]
-        process = Process(images, muscle_names,
-                          new_muscle_labels, self.activity)
 
-        # Show file explorer
-        self.__show_processed_files()
+        Process(images, muscle_names,
+                new_muscle_labels, self.activity)
+
+        # Call the callback function when the task is completed
+        self.__on_background_task_complete()
 
 
 # The main UI loop

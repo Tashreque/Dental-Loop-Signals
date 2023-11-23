@@ -335,6 +335,8 @@ class Process:
         print("Obtained muscle wise signals")
 
         # Plot all subjects for each element
+        # Set a non-interactive backend explicitly
+        plt.switch_backend('agg')
         for i, signals_list in enumerate(muscle_wise_signals):
             plt.figure()
             for j, sig in enumerate(signals_list):

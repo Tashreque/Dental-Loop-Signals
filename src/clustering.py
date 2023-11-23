@@ -265,6 +265,9 @@ class Cluster:
         return signals
 
     def __write_generated_signal_for_subject(self, generated_signal):
+        # Set a non-interactive backend explicitly
+        plt.switch_backend('agg')
+
         fig = plt.figure()
         plt.plot(range(len(generated_signal)),
                  generated_signal)
