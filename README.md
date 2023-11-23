@@ -54,6 +54,29 @@ pip install pandas
 
 8. Clone this repository or download the repository in your desired directory
 
-9. Navigate to the src folder within the terminal
+# Running the software
 
-10. Run the command **python main.py** on the terminal
+1. Navigate to the src folder within the terminal
+
+2. Run the command **python main.py** on the terminal
+
+The following parameters can be adjusted:
+- **Closest matching muscle activity** - Choose the one which closely resembles the muscle activity in your image(s)
+- **Number of muscles** - Specify the number of EMG signals within one image
+- **Magnification** - This does not have any impact on the functionality at this moment
+
+3. After adjusting parameters, press the **Add Image** button and select one or more than one image
+
+4. This would load a second window. Here, you can rename each muscle on the left panel. The right side of the window displays all the loaded images.
+
+5. Press the **PROCESS** button to process the images
+
+All the outputs generated will reside within the generated_files folder. Once processing is done, the second window will close and a file explorer with the generated subfolders will appear.
+
+## Limitations
+
+1. At the moment, the software was not tested on bipolar EMG signal images. The EMG signal images used to develop this tool all had unipolar EMG signals. This will be addressed in a future release
+
+2. On some occasions, the CSV quotients generated for EMG intensity might show a quotient of 0. This is a limitation of the NeuroKit2 library due to it sometimes not being able to determine regions of EMG activity. This will be addressed in a future release.
+
+3. As of right now, the images used to test the tool had 6 EMG signals in them. While the software may still function properly for images with less than 6 EMG signals, it cannot be guaranteed. This will be addressed on a future release.
