@@ -282,6 +282,12 @@ class Cluster:
         plt.savefig(file_path + f"{self.muscle_label}.jpg", dpi=300)
         plt.close(fig)
 
+        # Write time series as CSV
+        df = pd.DataFrame({"original": self.signals[-1],
+                           "suggested_normal": generated_signal})
+        df.to_csv(file_path + f"{self.muscle_label}_data.csv",
+                  index=False)
+
     def get_cluster_signals(self):
         # obtain cluster centric signals
         return self.cluster_signals
