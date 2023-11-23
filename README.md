@@ -32,27 +32,30 @@ customtkinter, Scikit-Learn, OpenCV, NeuroKit2, TSFEL, Pandas
 
 2. Once installed, follow the instructions laid out in Anaconda to activate a virtual environment
 
-3. Install Scikit-Learn using "pip install scikit-learn" on a terminal (might already be installed within the conda virtual environment)
+3. Install customtkinter using "pip install customtkinter" on a terminal
 
-4. Install OpenCV using "pip install opencv-python" on a terminal
+4. Install Scikit-Learn using "pip install scikit-learn" on a terminal (might already be installed within the conda virtual environment)
 
-5. Install NeuroKit2 using "pip install neurokit2" on a terminal
+5. Install OpenCV using "pip install opencv-python" on a terminal
 
-6. Install TSFEL using "pip install tsfel" on a terminal
+6. Install NeuroKit2 using "pip install neurokit2" on a terminal
 
-7. Install pandas using "pip install pandas" on a terminal
+7. Install TSFEL using "pip install tsfel" on a terminal
+
+8. Install pandas using "pip install pandas" on a terminal
 
 NOTE: Libraries like pandas and Scikit-Learn may already come by default with Anaconda
 
 **Alternatively, just copy and paste the following into the terminal with the conda virtual environment activated:**
 
+pip install customtkinter
 pip install scikit-learn
 pip install opencv-python
 pip install neurokit2
 pip install tsfel
 pip install pandas
 
-8. Clone this repository or download the repository in your desired directory
+9. Clone this repository or download the repository in your desired directory
 
 # Running the software
 
