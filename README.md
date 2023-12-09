@@ -76,6 +76,9 @@ The following parameters can be adjusted:
 
 All the outputs generated will reside within the generated_files folder. Once processing is done, the second window will close and a file explorer with the generated subfolders will appear.
 
+## Examples
+2 images for each of the activities of Anterior Protrusion, Lateral Excursion, Mouth Opening, and Chewing have been provided and can be used to test the application.
+
 ## Limitations
 
 1. At the moment, the software was not tested on bipolar EMG signal images. The EMG signal images used to develop this tool all had unipolar EMG signals. This will be addressed in a future release
