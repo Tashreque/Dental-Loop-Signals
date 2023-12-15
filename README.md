@@ -1,6 +1,6 @@
 # Dental Loop Signals
 
-This software allows users to upload EMG signal images, generate normal signals and quotients for duration/intensity. Customizable for muscle selection and activities, it provides CSVs for comparisons, especially useful when processing multiple images.
+This software allows users to upload EMG signal images containing either unipolar or bipolar EMG signals, generate normal signals and quotients for duration/intensity. Customizable for muscle selection and activities, it provides CSVs for comparisons, especially useful when processing multiple images.
 
 # What is Dental Loop Signals?
 
@@ -74,15 +74,12 @@ The following parameters can be adjusted:
 
 5. Press the **PROCESS** button to process the images
 
-All the outputs generated will reside within the generated_files folder. Once processing is done, the second window will close and a file explorer with the generated subfolders will appear.
+All the outputs generated will reside within the generated_files folder. Once processing is done, the second window will close and a file explorer with the generated subfolders will appear. Note that each time the **PROCESS** button is pressed, all outputs will be generated within the user defined folder name. This folder name is **task_1** by default. After processing once, if processing is done again for a different set of images and if the folder name is not changed, prior outputs within the previous folder will get renamed. Essentially, the folder name text box allows the user to generate outputs in a separate folder everytime processing is done.
 
 ## Examples
 2 images for each of the activities of Anterior Protrusion, Lateral Excursion, Mouth Opening, and Chewing have been provided and can be used to test the application.
 
 ## Limitations
+1. On some occasions, the CSV quotients generated for EMG intensity might show a quotient of 0. This is a limitation of the NeuroKit2 library due to it sometimes not being able to determine regions of EMG activity. This will be addressed in a future release.
 
-1. At the moment, the software was not tested on bipolar EMG signal images. The EMG signal images used to develop this tool all had unipolar EMG signals. This will be addressed in a future release
-
-2. On some occasions, the CSV quotients generated for EMG intensity might show a quotient of 0. This is a limitation of the NeuroKit2 library due to it sometimes not being able to determine regions of EMG activity. This will be addressed in a future release.
-
-3. As of right now, the images used to test the tool had 6 EMG signals in them. While the software may still function properly for images with less than 6 EMG signals, it cannot be guaranteed. This will be addressed on a future release.
+2. As of right now, the images used to test the tool had 6 EMG signals in them. While the software may still function properly for images with less than 6 EMG signals, it cannot be guaranteed. This will be addressed on a future release.
