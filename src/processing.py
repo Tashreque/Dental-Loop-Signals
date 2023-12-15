@@ -28,14 +28,16 @@ from clustering import Cluster
 import matplotlib.pyplot as plt
 import glob
 
+
 class Process:
     def __init__(self, images, muscles, muscle_labels,
-                 muscle_activity="mle"):
+                 folder_name, muscle_activity="mle"):
         # Member variables to store images, muscles and activity
         self.images = images
         self.muscles = muscles
         self.muscle_activity = muscle_activity
         self.muscle_labels = muscle_labels
+        self.parent_folder = folder_name
 
         # Resize all images to a common size
         self.__resize_images(1617, 590)
@@ -262,7 +264,8 @@ class Process:
                                      self.muscles[muscle_index],
                                      self.muscle_labels[muscle_index],
                                      self.muscle_activity,
-                                     subject_index + 1)
+                                     subject_index + 1,
+                                     self.parent_folder)
                 generated_signals = clustering.get_cluster_signals()
 
                 # Generate quotients for generated
@@ -293,7 +296,8 @@ class Process:
     def __write_quotients(self, duration_quotients, intensity_quotients):
         for i, dictionary in enumerate(duration_quotients):
             # Create path if not present
-            file_path = f"generated_files/subject_{i+1}/"
+            file_path = \
+                f"generated_files/{self.parent_folder}/subject_{i+1}/"
             if not os.path.exists(file_path):
                 # if the demo_folder directory is not present
                 # then create it.
@@ -304,7 +308,8 @@ class Process:
 
         for i, dictionary in enumerate(intensity_quotients):
             # Create path if not present
-            file_path = f"generated_files/subject_{i+1}/"
+            file_path = \
+                f"generated_files/{self.parent_folder}/subject_{i+1}/"
             if not os.path.exists(file_path):
                 # if the demo_folder directory is not present
                 # then create it.
@@ -365,7 +370,8 @@ class Process:
             plt.legend()
 
             # Create path if not present
-            file_path = "generated_files/overlapped_signals/"
+            file_path = \
+                f"generated_files/{self.parent_folder}/overlapped_signals/"
             if not os.path.exists(file_path):
                 # if the demo_folder directory is not present
                 # then create it.

@@ -31,7 +31,8 @@ import pandas as pd
 class Cluster:
     def __init__(self, df, signals,
                  muscle, muscle_label,
-                 muscle_activity, subject_number):
+                 muscle_activity, subject_number,
+                 folder_name):
         # Initialize member attributes
         self.df = df
         self.signals = signals
@@ -40,6 +41,7 @@ class Cluster:
         self.muscle_activity = muscle_activity
         self.subject_number = subject_number
         self.cluster_signals = None
+        self.parent_folder = folder_name
 
         # Cluster parameter attributes
         self.parameter_dict = {
@@ -292,7 +294,8 @@ class Cluster:
         plt.title("Suggested normal")
 
         # Create path if not present
-        file_path = f"generated_files/subject_{self.subject_number}/"
+        file_path = "generated_files/" + \
+            self.parent_folder + f"/subject_{self.subject_number}/"
         if not os.path.exists(file_path):
             # if the demo_folder directory is not present
             # then create it.

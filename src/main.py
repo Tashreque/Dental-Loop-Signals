@@ -42,6 +42,8 @@ class App(tk.Tk):
         self.process_button = None
         self.background_thread = None
         self.processing_label = None
+        self.folder_name_text_box = None
+        self.current_folder_name = None
 
         # Control variables
         self.is_new_window_active = False
@@ -56,6 +58,7 @@ class App(tk.Tk):
         # Member widgets
         self.image_viewer = None
 
+        self.__get_default_folder_name()
         self.__add_labels()
         self.__add_text_boxes()
         self.__add_buttons()
@@ -174,6 +177,15 @@ class App(tk.Tk):
             info_label = Label(left_frame, text=info_text)
             info_label.pack(pady=20)
 
+            # Add folder name label and textbox
+            folder_name_label = Label(left_frame, text="Folder Name:")
+            folder_name_label.pack(pady=20)
+            folder_name_text_box = Entry(left_frame)
+            folder_name_text_box.pack()
+            self.folder_name_text_box = folder_name_text_box
+            self.folder_name_text_box.insert(0,
+                                             self.current_folder_name)
+
             # Add loading label
             self.processing_label = Label(left_frame, text="")
             self.processing_label.pack(pady=10)
@@ -228,6 +240,10 @@ class App(tk.Tk):
         self.muscle_option_lists = []
         self.image_viewer.destroy()
         self.image_viewer = None
+        self.folder_name_text_box = None
+
+    def __get_default_folder_name(self):
+        self.current_folder_name = "task_1"
 
     def __on_background_task_complete(self):
         '''
@@ -299,8 +315,12 @@ class App(tk.Tk):
         print("Curr num of muscles:", self.num_muscles_text_box.get())
         images = [ImageTk.getimage(each) for each in self.images]
 
+        # Get current folder name
+        self.current_folder_name = self.folder_name_text_box.get()
+
         Process(images, muscle_names,
-                new_muscle_labels, self.activity)
+                new_muscle_labels, self.current_folder_name,
+                self.activity)
 
         # Call the callback function when the task is completed
         self.__on_background_task_complete()
