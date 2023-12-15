@@ -316,7 +316,9 @@ class App(tk.Tk):
         images = [ImageTk.getimage(each) for each in self.images]
 
         # Get current folder name
-        self.current_folder_name = self.folder_name_text_box.get()
+        folder_text = self.folder_name_text_box.get()
+        if len(folder_text) > 0:
+            self.current_folder_name = folder_text
 
         Process(images, muscle_names,
                 new_muscle_labels, self.current_folder_name,
