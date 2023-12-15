@@ -305,8 +305,15 @@ class Cluster:
         plt.close(fig)
 
         # Write time series as CSV
-        df = pd.DataFrame({"original": self.signals[-1],
-                           "suggested_normal": generated_signal})
+        print(len(self.signals[-1]), len(generated_signal))
+        org_signal = self.signals[-1].copy()
+        gen_signal = generated_signal.copy()
+        if len(gen_signal) > len(org_signal):
+            gen_signal = gen_signal[:len(org_signal)].copy()
+        elif len(org_signal) > len(gen_signal):
+            org_signal = org_signal[:len(gen_signal)].copy()
+        df = pd.DataFrame({"original": org_signal,
+                           "suggested_normal": gen_signal})
         df.to_csv(file_path + f"{self.muscle_label}_data.csv",
                   index=False)
 
