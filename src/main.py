@@ -178,8 +178,22 @@ class App(tk.Tk):
             info_label.pack(pady=20)
 
             # Add folder name label and textbox
+            folder_naming_info = ["This is the name",
+                                  "of the folder within",
+                                  "which all other subfolders",
+                                  "exist.",
+                                  "Everytime PROCESS is pressed,",
+                                  "a new folder is created.",
+                                  "Note that an existing folder",
+                                  "with the same name will be",
+                                  "replaced if not given a different",
+                                  "name in the folder name text box",
+                                  "below."]
             folder_name_label = Label(left_frame, text="Folder Name:")
             folder_name_label.pack(pady=20)
+            folder_rules_label = Label(left_frame,
+                                       text="\n".join(folder_naming_info))
+            folder_rules_label.pack()
             folder_name_text_box = Entry(left_frame)
             folder_name_text_box.pack()
             self.folder_name_text_box = folder_name_text_box
